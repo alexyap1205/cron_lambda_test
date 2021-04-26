@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description:
-  Test Event through cloud formation
+  Test Event through cloudformation
 
 Resources:
   SampleCronRule:
@@ -15,6 +15,13 @@ Resources:
           Arn: !GetAtt
             - HelloWorldFunction
             - Arn
+  SampleLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      FunctionName: !GetAtt HelloWorldFunction.Arn
+      SourceArn: !GetAtt SampleCronRule.Arn
   HelloWorldFunction:
     Type: AWS::Lambda::Function
     Properties:
