@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Test Event through cloud formation
+
+Resources:
+  SampleCronRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Sample Event Rule
+      Name: sample_event_rule
+      ScheduleExpression: rate(1 minute)
+      State: ENABLED
+      Targets:
+        - Id: HelloWorldFunction
+          Arn: !GetAtt
+            - HelloWorldFunction
+            - Arn
+  HelloWorldFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: lambda-functions-alexyap1205
+        S3Key: app.zip
+      FunctionName: helloWorld
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Role: arn:aws:iam::002046995830:role/service-role/lambda-hello-world-role
